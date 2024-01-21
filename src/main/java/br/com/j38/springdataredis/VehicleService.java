@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -22,26 +24,28 @@ public class VehicleService {
     VehicleRedisRepository vehicleRedisRepository;
     VehicleRepository vehicleRepository;
 
+    @Transactional
     public Vehicle createOrUpdateVehicle(Vehicle vehicle) {
         //setCreatedAt() com a data UTC atual
-        vehicle.setCreatedAt(LocalDateTime.from(Instant.now().truncatedTo(ChronoUnit.MILLIS)));
+        vehicle.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         vehicleRedisRepository.save(savedVehicle);
         return savedVehicle;
     }
 
-    public Vehicle updateVehicle(String plate, Vehicle vehicleChanged) {
+    @Transactional
+    public Vehicle updateVehicle(Vehicle vehicleChanged) {
         //Busca o veículo no Redis, se não encontrar busca no banco de dados
-        Optional<Vehicle> existingVehicle = vehicleRedisRepository.findById(plate);
+        Optional<Vehicle> existingVehicle = vehicleRedisRepository.findById(vehicleChanged.getPlate());
 
         if (existingVehicle.isEmpty())
-            existingVehicle = vehicleRepository.findById(plate);
+            existingVehicle = vehicleRepository.findById(vehicleChanged.getPlate());
 
         if (existingVehicle.isPresent()) {
             var vehicleToUpdate = new Vehicle();
             BeanUtils.copyProperties(vehicleChanged, vehicleToUpdate);
             vehicleToUpdate.setCreatedAt(existingVehicle.get().getCreatedAt());
-            vehicleToUpdate.setUpdatedAt(LocalDateTime.from(Instant.now().truncatedTo(ChronoUnit.MILLIS)));
+            vehicleToUpdate.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
             Vehicle updatedVehicle = vehicleRepository.save(vehicleToUpdate);
             vehicleRedisRepository.save(updatedVehicle);
@@ -51,11 +55,13 @@ public class VehicleService {
         return null;
     }
 
+    @Transactional
     public Vehicle findByPlate(String plate) {
         return vehicleRedisRepository.findById(plate)
                 .orElseGet(() -> vehicleRepository.findById(plate).orElse(null));
     }
 
+    @Transactional
     public List<Vehicle> findAllVehicles() {
         //retornar todos os veículos do Redis, caso não tenha nenhum, retornar todos do banco de dados
         Iterable<Vehicle> vehicles = vehicleRedisRepository.findAll();

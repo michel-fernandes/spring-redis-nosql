@@ -4,19 +4,19 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@RestController
+@RequestMapping("api/v1/vehicles")
 public class VehicleController {
 
     VehicleService vehicleService;
     VehicleMapper vehicleMapper;
+    static String VEHICLE_NOT_FOUND = "Vehicle not found";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -26,13 +26,13 @@ public class VehicleController {
         return vehicleMapper.toDTO(createdVehicle);
     }
 
-    @PatchMapping("/{plate}")
+    @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public VehicleDTO updateVehicle(@PathVariable String plate, @RequestBody VehicleDTO vehicleDTO) {
-        Vehicle vehicle = vehicleService.updateVehicle(plate, vehicleMapper.toEntity(vehicleDTO));
+    public VehicleDTO updateVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        Vehicle vehicle = vehicleService.updateVehicle(vehicleMapper.toEntity(vehicleDTO));
 
         if (vehicle == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, VEHICLE_NOT_FOUND);
         }
         return vehicleMapper.toDTO(vehicle);
     }
@@ -42,7 +42,7 @@ public class VehicleController {
     public VehicleDTO getByPlate(@PathVariable String plate) {
         Vehicle vehicle = vehicleService.findByPlate(plate);
         if (vehicle == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, VEHICLE_NOT_FOUND);
         }
         return vehicleMapper.toDTO(vehicle);
     }
@@ -51,12 +51,16 @@ public class VehicleController {
     @ResponseStatus(HttpStatus.OK)
     public List<VehicleDTO> getAllVehicles() {
         List<Vehicle> vehicles = vehicleService.findAllVehicles();
-        return vehicles.stream().map(vehicleMapper::toDTO).collect(Collectors.toList());
+
+        if (vehicles == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, VEHICLE_NOT_FOUND);
+        }
+        return vehicles.stream().map(vehicleMapper::toDTO).toList();
     }
 
     @GetMapping("/store/{storeName}")
     public List<VehicleDTO> getVehiclesByStore(@PathVariable String storeName) {
         List<Vehicle> vehicles = vehicleService.findVehiclesByStore(storeName);
-        return vehicles.stream().map(vehicleMapper::toDTO).collect(Collectors.toList());
+        return vehicles.stream().map(vehicleMapper::toDTO).toList();
     }
 }

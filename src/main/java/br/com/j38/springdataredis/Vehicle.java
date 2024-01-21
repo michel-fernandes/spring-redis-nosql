@@ -1,12 +1,11 @@
 package br.com.j38.springdataredis;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -14,14 +13,19 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Vehicle {
     @Id
-    private String plate;
-    private String color;
-    private String model;
-    private int year;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private boolean isActive;
-    private String store;
+    String plate;
+    
+    String color;
+    String model;
+    int year;
+    Timestamp createdAt;
+
+    @Column(nullable = true) // Permite valores nulos
+    Timestamp updatedAt;
+
+    boolean isActive;
+    String store;
 }

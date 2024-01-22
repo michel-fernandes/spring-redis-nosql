@@ -1,5 +1,7 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.mapper;
 
+import br.com.j38.springdataredis.dto.VehicleDTO;
+import br.com.j38.springdataredis.entity.Vehicle;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

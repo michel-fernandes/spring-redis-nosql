@@ -1,5 +1,9 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.controller;
 
+import br.com.j38.springdataredis.dto.VehicleDTO;
+import br.com.j38.springdataredis.mapper.VehicleMapper;
+import br.com.j38.springdataredis.service.VehicleService;
+import br.com.j38.springdataredis.entity.Vehicle;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

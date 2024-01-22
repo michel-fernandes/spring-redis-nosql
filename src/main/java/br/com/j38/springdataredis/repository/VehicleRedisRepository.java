@@ -1,5 +1,6 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.repository;
 
+import br.com.j38.springdataredis.entity.Vehicle;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;

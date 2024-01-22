@@ -1,6 +1,8 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.service;
 
-import jakarta.annotation.Nullable;
+import br.com.j38.springdataredis.entity.Vehicle;
+import br.com.j38.springdataredis.repository.VehicleRedisRepository;
+import br.com.j38.springdataredis.repository.VehicleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -9,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

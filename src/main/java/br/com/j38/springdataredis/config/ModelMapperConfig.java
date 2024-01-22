@@ -1,4 +1,4 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

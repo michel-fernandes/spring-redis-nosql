@@ -1,4 +1,4 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

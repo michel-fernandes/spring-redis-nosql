@@ -1,4 +1,4 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;

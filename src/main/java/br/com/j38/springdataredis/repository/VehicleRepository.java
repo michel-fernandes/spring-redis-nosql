@@ -1,5 +1,6 @@
-package br.com.j38.springdataredis;
+package br.com.j38.springdataredis.repository;
 
+import br.com.j38.springdataredis.entity.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

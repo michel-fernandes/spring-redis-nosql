@@ -1,4 +1,9 @@
-INSERT INTO market.vehicle (color, created_at, is_active, model, plate, store, updated_at, "year") 
+--liquibase formatted sql
+
+--changeset michel-fernandes:20240124T2150-1
+--comment: Inserting values into market_place.vehicle
+
+INSERT INTO market_place.vehicle (color, created_at, is_active, model, plate, store, updated_at, model_year)
 VALUES
     ('red', '2024-01-21 16:44:31.514', true, 'Fusca', 'ABC1D23', 'RJ-RO', null, 1998),
     ('green', '2024-01-21 16:55:29.903', true, 'Uno', 'XPT1O23', 'RJ-RO', null, 2015),
@@ -11,3 +16,4 @@ VALUES
     ('orange', '2024-01-21 16:56:42.154', true, 'Focus', 'XPT1O30', 'MG-RJ', null, 2016),
     ('purple', '2024-01-21 16:56:52.085', true, 'Mazda3', 'XPT1O31', 'MT-MS', null, 2021),
     ('brown', '2024-01-21 16:57:01.049', true, 'Rav4', 'XPT1O32', 'GO-DF', null, 2019);
+--rollback DELETE FROM cfc.vehicle_status WHERE plate IN ('ABC1D23', 'XPT1O23', 'XPT1O24', 'XPT1O25', 'XPT1O26', 'XPT1O27', 'XPT1O28', 'XPT1O29', 'XPT1O30', 'XPT1O31', 'XPT1O32');

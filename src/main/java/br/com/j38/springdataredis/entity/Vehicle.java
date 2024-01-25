@@ -14,13 +14,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "vehicle", schema = "market_place")
 public class Vehicle {
     @Id
     String plate;
     
     String color;
     String model;
-    int year;
+    int modelYear;
     Timestamp createdAt;
 
     @Column(nullable = true) // Permite valores nulos

@@ -5,22 +5,25 @@ import br.com.j38.springdataredis.mapper.VehicleMapper;
 import br.com.j38.springdataredis.service.VehicleService;
 import br.com.j38.springdataredis.entity.Vehicle;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/vehicles")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class VehicleController {
 
-    VehicleService vehicleService;
-    VehicleMapper vehicleMapper;
-    static String VEHICLE_NOT_FOUND = "Vehicle not found";
+    final VehicleService vehicleService;
+    final VehicleMapper vehicleMapper;
+    static final String VEHICLE_NOT_FOUND = "Vehicle not found";
+
+    public VehicleController(VehicleService vehicleService, VehicleMapper vehicleMapper) {
+        this.vehicleService = vehicleService;
+        this.vehicleMapper = vehicleMapper;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

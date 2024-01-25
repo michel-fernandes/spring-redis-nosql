@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VehicleDTO {
-    @Pattern(regexp = "[A-Z]{3}-[0-9]{4} // [A-Z]{3}-[0-9]{1}-[A-Z]{1}-[A-Z]{2}")
+    @Pattern(regexp = "[A-Z]{3}\\d{4}|[A-Z]{3}\\d[A-Z]\\d{2}", message = "Invalid plate format")
     @NotNull
     private String plate;
     @NotNull
